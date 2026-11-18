@@ -1,0 +1,22 @@
+@let details = project();
+<section
+  class="project-dialog"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="dialog-title"
+  (click)="$event.stopPropagation()"
+>
+  <button #closeButton class="dialog-close" (click)="closed.emit()" autofocus>Cerrar ×</button>
+  <span class="eyebrow">PROYECTO {{ details.number }} / {{ details.type }}</span>
+  <h2 id="dialog-title">{{ details.name }}</h2>
+  <img [src]="'assets/projects/' + details.image" [alt]="details.name" />
+  <p>{{ details.description }}</p>
+  <span class="eyebrow">{{ details.tags }}</span>
+
+  <div class="dialog-links">
+    <a [href]="details.github" target="_blank" rel="noopener noreferrer">Ver código ↗</a>
+    @if (details.demo) {
+      <a [href]="details.demo" target="_blank" rel="noopener noreferrer">Abrir demo ↗</a>
+    }
+  </div>
+</section>

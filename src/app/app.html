@@ -1,0 +1,119 @@
+<a class="skip" href="#trabajo">Saltar al contenido</a>
+<div #cursor class="cursor" aria-hidden="true"><span>↗</span></div>
+<header>
+  <a class="brand" href="#inicio" aria-label="Carlos Horrillo, inicio">CH<span>®</span></a>
+  <span class="header-note">DESARROLLO & VISIÓN DE NEGOCIO<br />BARCELONA, ES</span>
+  <nav aria-label="Navegación principal">
+    <a href="#trabajo"
+      >Trabajo <sup>{{ projectCount }}</sup></a
+    ><a href="#perfil">Perfil</a><a href="#contacto">Hablemos ↗</a>
+  </nav>
+  <button
+    class="menu-toggle"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="menuOpen()"
+    aria-controls="mobile-menu"
+  >
+    {{ menuOpen() ? 'Cerrar −' : 'Menú + ' }}
+  </button>
+</header>
+@if (menuOpen()) {
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Navegación móvil">
+    <a href="#trabajo" (click)="closeMenu()">Trabajo ↗</a
+    ><a href="#perfil" (click)="closeMenu()">Perfil ↗</a
+    ><a href="#contacto" (click)="closeMenu()">Hablemos ↗</a>
+  </nav>
+}
+<main id="inicio">
+  <section class="hero">
+    <app-hero-visual />
+    <div class="hero-meta">
+      <span>CARLOS HORRILLO / PORTFOLIO {{ year }}</span
+      ><span><i></i> ABIERTO A NUEVOS RETOS</span>
+    </div>
+    <h1>
+      <span>MENTE DE</span><span class="second">NEGOCIO<span class="period">.</span></span
+      ><span class="last">ALMA DE <em>CÓDIGO.</em></span>
+    </h1>
+    <div class="hero-bottom">
+      <a class="round-link" href="#trabajo" aria-label="Explorar proyectos">↓</a>
+      <p>
+        Conecto la realidad del negocio con<br />productos digitales que tienen sentido.<br /><b
+          >Angular. Java. Una perspectiva diferente.</b
+        >
+      </p>
+      <span class="edition">SCROLL PARA EXPLORAR<br />↓ &nbsp; EDICIÓN 001</span>
+    </div>
+  </section>
+  <section class="intro section-pad" id="perfil">
+    <span class="eyebrow">01 / EL PUNTO DE PARTIDA</span>
+    <div>
+      <h2 class="reveal">Antes que a escribir código,<br />aprendí a <em>leer el negocio.</em></h2>
+      <div class="intro-copy reveal">
+        <p>
+          Soy Carlos, desarrollador con experiencia dirigiendo equipos y tiendas. Conozco los
+          procesos, las personas y las decisiones que hay detrás de una pantalla.
+        </p>
+        <p>
+          Hoy llevo esa perspectiva al desarrollo con Angular y Spring Boot. Me interesa construir
+          herramientas claras, útiles y con una experiencia cuidada hasta el último detalle.
+        </p>
+      </div>
+    </div>
+    <app-career-timeline />
+  </section>
+  <app-experience-showcase [projects]="projects" (projectOpened)="openProject($event)" />
+  <section class="approach section-pad">
+    <span class="eyebrow">03 / CÓMO PIENSO</span>
+    <h2 class="reveal">Del problema real<br />a la <em>solución correcta.</em></h2>
+    <div class="approach-rows">
+      <div class="reveal">
+        <span>01</span>
+        <h3>Entender primero.</h3>
+        <p>Escuchar a las personas, observar el proceso y definir qué necesita mejorar.</p>
+      </div>
+      <div class="reveal">
+        <span>02</span>
+        <h3>Construir con criterio.</h3>
+        <p>
+          Angular, TypeScript, Java y Spring Boot para convertir la idea en una aplicación
+          mantenible.
+        </p>
+      </div>
+      <div class="reveal">
+        <span>03</span>
+        <h3>Hacerlo fácil.</h3>
+        <p>
+          Una interfaz debe reducir fricción. Diseño, interacción y automatización al servicio de
+          quien la usa.
+        </p>
+      </div>
+    </div>
+    <div class="stack-line">
+      ANGULAR <span>✳︎</span> SPRING BOOT <span>✳︎</span> TYPESCRIPT <span>✳︎</span> JAVA
+      <span>✳︎</span> POSTGRESQL
+    </div>
+  </section>
+  <section class="contact section-pad" id="contacto">
+    <span class="eyebrow">04 / EL SIGUIENTE CAPÍTULO</span>
+    <p>¿Un equipo, un proyecto o una buena conversación?</p>
+    <a class="contact-title" href="mailto:carloshorrillo@hotmail.com"
+      >HAGAMOS<br /><em>QUE PASE.</em><span>↗</span></a
+    >
+    <div class="contact-links">
+      <a href="mailto:carloshorrillo@hotmail.com">carloshorrillo&#64;hotmail.com ↗</a
+      ><a href="https://linkedin.com/in/carlos-horrillo" target="_blank" rel="noopener noreferrer"
+        >LinkedIn ↗</a
+      ><a href="https://github.com/CarlosSensei" target="_blank" rel="noopener noreferrer"
+        >GitHub ↗</a
+      >
+    </div>
+  </section>
+</main>
+<footer>
+  <span>© {{ year }} CARLOS HORRILLO</span><span>HECHO CON ANGULAR Y MUCHO CRITERIO.</span
+  ><a href="#inicio">VOLVER ARRIBA ↑</a>
+</footer>
+@if (selectedProject(); as project) {
+  <div appProjectDialog [project]="project" (closed)="closeProject()"></div>
+}

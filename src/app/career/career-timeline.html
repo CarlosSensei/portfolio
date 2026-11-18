@@ -1,0 +1,88 @@
+<div class="career-shell" role="region" aria-labelledby="career-title">
+  <div class="career-heading">
+    <div>
+      <span class="eyebrow">UNA TRAYECTORIA. MUCHAS PERSPECTIVAS.</span>
+      <h3 id="career-title">El camino hasta <em>aquí.</em></h3>
+    </div>
+    <span class="career-hint">RECORRE MI HISTORIA <span aria-hidden="true">→</span></span>
+  </div>
+  <div
+    #viewport
+    class="career-viewport"
+    tabindex="0"
+    aria-label="Trayectoria profesional, desplazamiento horizontal"
+    (keydown.arrowright)="goTo(active() + 1); $event.preventDefault()"
+    (keydown.arrowleft)="goTo(active() - 1); $event.preventDefault()"
+  >
+    <ol #track class="career-track">
+      @for (step of steps; track step.start; let index = $index) {
+        <li
+          #panel
+          class="career-step"
+          [style.--step-color]="step.color"
+          [attr.aria-labelledby]="'career-role-' + index"
+        >
+          <span class="step-year" aria-hidden="true">{{ step.start }}</span>
+          <div class="step-top">
+            <span>{{ step.year }}</span
+            ><span>CAPÍTULO 0{{ index + 1 }}</span>
+          </div>
+          <div class="step-content">
+            <span class="step-skill">{{ step.skill }}</span>
+            <p class="step-chapter">{{ step.chapter }}</p>
+            <div class="step-details">
+              <h4 [id]="'career-role-' + index">{{ step.title }}</h4>
+              <p class="step-company">{{ step.company }}</p>
+              <p class="step-description">{{ step.description }}</p>
+            </div>
+          </div>
+          <div class="step-bottom">
+            <span class="step-dot" aria-hidden="true"></span>
+            <span>{{ step.year }}</span>
+            <span aria-hidden="true">{{
+              index === steps.length - 1
+                ? 'EL SIGUIENTE CAPÍTULO ESTÁ POR ESCRIBIR ↗'
+                : 'CADA ETAPA SUMA →'
+            }}</span>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+  <div class="career-controls">
+    <div class="career-buttons">
+      <button
+        type="button"
+        aria-label="Etapa anterior"
+        [disabled]="active() === 0"
+        (click)="goTo(active() - 1)"
+      >
+        ←
+      </button>
+      <button
+        type="button"
+        aria-label="Etapa siguiente"
+        [disabled]="active() === steps.length - 1"
+        (click)="goTo(active() + 1)"
+      >
+        →
+      </button>
+    </div>
+    <nav aria-label="Elegir etapa profesional">
+      @for (step of steps; track step.start; let index = $index) {
+        <button
+          type="button"
+          [class.is-active]="active() === index"
+          [attr.aria-current]="active() === index ? 'step' : null"
+          [attr.aria-label]="step.year + ': ' + step.company"
+          (click)="goTo(index)"
+        >
+          {{ step.start }}
+        </button>
+      }
+    </nav>
+    <span class="career-counter" aria-live="polite" aria-atomic="true"
+      >0{{ active() + 1 }} / 0{{ steps.length }}</span
+    >
+  </div>
+</div>

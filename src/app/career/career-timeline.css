@@ -229,6 +229,19 @@ button:focus-visible,
   min-height: 0;
 }
 @media (max-width: 700px) {
+  :host(.is-enhanced) .career-shell {
+    padding-block: clamp(10px, 2.5svh, 28px) clamp(10px, 2svh, 22px);
+  }
+  :host(.is-enhanced) .career-heading {
+    gap: 12px;
+    padding-bottom: clamp(8px, 2svh, 22px);
+  }
+  :host(.is-enhanced) .career-step {
+    grid-template-rows: clamp(60px, calc(35svh - 130px), 180px) 1fr;
+  }
+  :host(.is-enhanced) .art-year {
+    font-size: clamp(48px, min(20vw, calc(35svh - 140px)), 124px);
+  }
   .career-step {
     grid-template-columns: 1fr;
     grid-template-rows: 180px 1fr;
@@ -249,6 +262,48 @@ button:focus-visible,
   .career-controls nav {
     order: 3;
     flex-basis: 100%;
+  }
+  :host(.is-enhanced) .career-controls {
+    padding-top: 10px;
+    row-gap: 6px;
+  }
+}
+@media (max-width: 700px) and (max-height: 720px) {
+  :host(.is-enhanced) .career-heading h3 {
+    font-size: clamp(21px, 6vw, 27px);
+  }
+  :host(.is-enhanced) .step-content {
+    padding: 12px;
+  }
+  :host(.is-enhanced) .step-top {
+    padding-bottom: 8px;
+  }
+  :host(.is-enhanced) .step-chapter {
+    font-size: clamp(26px, 7vw, 32px);
+    margin-block: 10px;
+  }
+  :host(.is-enhanced) .step-description {
+    margin-top: 8px;
+  }
+  :host(.is-enhanced) .step-learning {
+    margin-top: 10px;
+  }
+}
+@media (max-width: 360px) and (max-height: 640px) {
+  :host(.is-enhanced) .career-hint,
+  :host(.is-enhanced) .career-counter {
+    display: none;
+  }
+  :host(.is-enhanced) .career-controls {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  :host(.is-enhanced) .career-controls nav {
+    flex-basis: auto;
+    gap: 4px;
+  }
+  :host(.is-enhanced) .career-buttons button {
+    width: 36px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

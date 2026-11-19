@@ -64,6 +64,8 @@ describe('Career timeline navigation', () => {
       CareerTimeline,
     );
     const root: HTMLElement = fixture.nativeElement;
+    const shell = root.querySelector<HTMLElement>('.career-shell')!;
+    Object.defineProperty(shell, 'offsetHeight', { value: 740 });
     vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(600);
     let top = 100;
     vi.spyOn(root, 'getBoundingClientRect').mockImplementation(() => ({
@@ -79,7 +81,7 @@ describe('Career timeline navigation', () => {
     }));
     await fixture.whenStable();
     expect(root.classList.contains('is-enhanced')).toBe(true);
-    expect(parseFloat(root.style.height)).toBeGreaterThan(3000 + window.innerHeight);
+    expect(parseFloat(root.style.height)).toBe(3000 + 740 * 1.3);
     const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     fixture.componentInstance.goTo(5);
     expect(scrollTo).toHaveBeenCalledWith({ top: window.scrollY + 3100, behavior: 'smooth' });

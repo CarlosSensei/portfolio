@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  border-top: 1px solid var(--line, #c7c3bb);
+}
+.profile-intro {
+  display: grid;
+  grid-template-columns: 1fr 2.3fr;
+  gap: 30px;
+  padding: var(--space, 100px) var(--gutter, 24px) clamp(48px, 8vw, 110px);
+}
+h2 {
+  font-size: clamp(35px, 4.3vw, 68px);
+}
+.profile-copy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 36px;
+  max-width: 850px;
+  line-height: 1.75;
+}
+@media (max-width: 800px) {
+  .profile-intro {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 540px) {
+  .profile-copy {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+}

@@ -9,7 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { CareerTimeline } from './career/career-timeline';
+import { Profile } from './profile/profile';
 import { HeroVisual } from './hero/hero-visual';
 import { setupPageMotion, setupPointerCursor } from './page-motion';
 import { ExperienceShowcase } from './projects/experience-showcase';
@@ -18,7 +18,7 @@ import { PROJECTS, Project } from './projects/projects';
 
 @Component({
   selector: 'app-root',
-  imports: [HeroVisual, ExperienceShowcase, CareerTimeline, ProjectDialog],
+  imports: [HeroVisual, ExperienceShowcase, Profile, ProjectDialog],
   templateUrl: './app.html',
   host: { '(window:keydown.escape)': 'closeOverlays()' },
 })

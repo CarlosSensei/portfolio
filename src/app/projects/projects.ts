@@ -12,14 +12,14 @@ export type Project = {
 
 export const PROJECTS: readonly Project[] = [
   {
-    name: 'OptiFlow',
+    name: 'CRM Intro',
     type: 'Producto',
     tags: 'Angular / Spring Boot / CRM',
     image: 'crm-project.jpg',
     number: '01',
     description:
-      'De la experiencia en óptica a una herramienta de gestión. Clientes, presupuestos, pedidos y seguimiento en una misma aplicación.',
-    github: 'https://github.com/CarlosSensei/TFG-Prometeo',
+      'Una herramienta de gestión diaria en cualquier empresa. Clientes, presupuestos, pedidos y seguimiento en una misma aplicación. Mock de frontend para testear propuestas de UX/UI',
+    github: 'https://github.com/CarlosSensei/CRM-PLAYGROUND',
     demo: 'https://carlossensei.github.io/CRM-PLAYGROUND/',
     color: '#cbd2b5',
   },

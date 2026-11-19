@@ -1,10 +1,9 @@
 <div class="career-shell" role="region" aria-labelledby="career-title">
   <div class="career-heading">
     <div>
-      <span class="eyebrow">UNA TRAYECTORIA. MUCHAS PERSPECTIVAS.</span>
       <h3 id="career-title">El camino hasta <em>aquí.</em></h3>
     </div>
-    <span class="career-hint">RECORRE MI HISTORIA <span aria-hidden="true">→</span></span>
+    <span class="career-hint">Desplázate o elige una etapa <span aria-hidden="true">→</span></span>
   </div>
   <div
     #viewport
@@ -22,28 +21,22 @@
           [style.--step-color]="step.color"
           [attr.aria-labelledby]="'career-role-' + index"
         >
-          <span class="step-year" aria-hidden="true">{{ step.start }}</span>
-          <div class="step-top">
-            <span>{{ step.year }}</span
-            ><span>CAPÍTULO 0{{ index + 1 }}</span>
+          <div class="chapter-art" [attr.data-motif]="step.motif" aria-hidden="true">
+            <span class="art-ring"></span><span class="art-ring"></span
+            ><span class="art-ring"></span>
+            <span class="art-year">{{ step.start }}</span>
           </div>
           <div class="step-content">
-            <span class="step-skill">{{ step.skill }}</span>
+            <div class="step-top">
+              <span>{{ step.year }}</span>
+            </div>
             <p class="step-chapter">{{ step.chapter }}</p>
             <div class="step-details">
               <h4 [id]="'career-role-' + index">{{ step.title }}</h4>
               <p class="step-company">{{ step.company }}</p>
               <p class="step-description">{{ step.description }}</p>
             </div>
-          </div>
-          <div class="step-bottom">
-            <span class="step-dot" aria-hidden="true"></span>
-            <span>{{ step.year }}</span>
-            <span aria-hidden="true">{{
-              index === steps.length - 1
-                ? 'EL SIGUIENTE CAPÍTULO ESTÁ POR ESCRIBIR ↗'
-                : 'CADA ETAPA SUMA →'
-            }}</span>
+            <p class="step-learning"><strong>Qué me llevé</strong> {{ step.learning }}</p>
           </div>
         </li>
       }
@@ -81,8 +74,6 @@
         </button>
       }
     </nav>
-    <span class="career-counter" aria-live="polite" aria-atomic="true"
-      >0{{ active() + 1 }} / 0{{ steps.length }}</span
-    >
+    <span class="career-counter" aria-hidden="true">0{{ active() + 1 }} / 0{{ steps.length }}</span>
   </div>
 </div>

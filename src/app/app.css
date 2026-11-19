@@ -218,14 +218,26 @@ h1 em,
 .contact-title em {
   letter-spacing: -0.055em;
 }
-.contact-title > span {
+.link-arrow {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.12em;
+  background-color: currentColor;
+  clip-path: polygon(50% 10%, 88% 48%, 81% 55%, 55% 29%, 55% 90%, 45% 90%, 45% 29%, 19% 55%, 12% 48%);
+  rotate: 45deg;
+}
+.link-arrow--up {
+  rotate: none;
+}
+.contact-title > .link-arrow {
   position: absolute;
   right: 0;
   top: 0;
   font-size: 1.1em;
   transition: transform 0.3s;
 }
-.contact-title:hover > span {
+.contact-title:hover > .link-arrow {
   transform: translate(8px, -8px);
 }
 .contact-links {
@@ -443,7 +455,7 @@ footer {
   .contact-title {
     font-size: 14vw;
   }
-  .contact-title > span {
+  .contact-title > .link-arrow {
     font-size: 0.7em;
   }
   .contact-links {

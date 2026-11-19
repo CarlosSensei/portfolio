@@ -95,21 +95,24 @@
     <span class="eyebrow">04 / EL SIGUIENTE CAPÍTULO</span>
     <p>¿Un equipo, un proyecto o una buena conversación?</p>
     <a class="contact-title" href="mailto:carloshorrillo@hotmail.com"
-      >HAGAMOS<br /><em>QUE PASE.</em><span>↗</span></a
-    >
+      >HAGAMOS<br /><em>QUE PASE.</em><span class="link-arrow" aria-hidden="true"></span
+    ></a>
     <div class="contact-links">
-      <a href="mailto:hola@carloshorrillo.com">hola&#64;carloshorrillo.com ↗</a
+      <a href="mailto:hola@carloshorrillo.com"
+        >hola&#64;carloshorrillo.com <span class="link-arrow" aria-hidden="true"></span></a
       ><a href="https://linkedin.com/in/carlos-horrillo" target="_blank" rel="noopener noreferrer"
-        >LinkedIn ↗</a
+        >LinkedIn <span class="link-arrow" aria-hidden="true"></span></a
       ><a href="https://github.com/CarlosSensei" target="_blank" rel="noopener noreferrer"
-        >GitHub ↗</a
-      >
+        >GitHub <span class="link-arrow" aria-hidden="true"></span
+      ></a>
     </div>
   </section>
 </main>
 <footer>
   <span>© {{ year }} CARLOS HORRILLO</span><span>HECHO CON ANGULAR Y MUCHO CRITERIO.</span
-  ><a href="#inicio">VOLVER ARRIBA ↑</a>
+  ><a href="#inicio"
+    >VOLVER ARRIBA <span class="link-arrow link-arrow--up" aria-hidden="true"></span
+  ></a>
 </footer>
 @if (selectedProject(); as project) {
   <div appProjectDialog [project]="project" (closed)="closeProject()"></div>

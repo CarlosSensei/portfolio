@@ -54,9 +54,9 @@ describe('Career timeline navigation', () => {
     fixture.destroy();
     vi.unstubAllGlobals();
   });
-  it('holds the timeline through all horizontal stages and supports reverse scrolling', async () => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: query.includes('min-width'),
+  it('pins a landscape tablet when the stages fit and supports reverse scrolling', async () => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: false,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
     }));
@@ -65,40 +65,45 @@ describe('Career timeline navigation', () => {
     );
     const root: HTMLElement = fixture.nativeElement;
     const shell = root.querySelector<HTMLElement>('.career-shell')!;
-    Object.defineProperty(shell, 'offsetHeight', { value: 740 });
-    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(600);
+    Object.defineProperty(shell, 'offsetHeight', { value: 600 });
+    const viewport = root.querySelector<HTMLElement>('.career-viewport')!;
+    Object.defineProperties(viewport, {
+      clientWidth: { value: 768 },
+      clientHeight: { value: 400 },
+      scrollHeight: { value: 400 },
+    });
     let top = 100;
     vi.spyOn(root, 'getBoundingClientRect').mockImplementation(() => ({
       top,
       bottom: top + 4000,
       height: 4000,
-      width: 600,
+      width: 768,
       x: 0,
       y: top,
       left: 0,
-      right: 600,
+      right: 768,
       toJSON() {},
     }));
     await fixture.whenStable();
     expect(root.classList.contains('is-enhanced')).toBe(true);
-    expect(parseFloat(root.style.height)).toBe(3000 + 740 * 1.3);
+    expect(parseFloat(root.style.height)).toBe(3840 + 600 * 1.3);
     const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     fixture.componentInstance.goTo(5);
-    expect(scrollTo).toHaveBeenCalledWith({ top: window.scrollY + 3100, behavior: 'smooth' });
+    expect(scrollTo).toHaveBeenCalledWith({ top: window.scrollY + 3940, behavior: 'smooth' });
     let queued: FrameRequestCallback | undefined;
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       queued = callback;
       return 1;
     });
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
-    top = -3000;
+    top = -3840;
     window.dispatchEvent(new Event('scroll'));
     queued!(0);
     expect(root.querySelector<HTMLElement>('.career-track')!.style.transform).toBe(
-      'translate3d(-3000px, 0, 0)',
+      'translate3d(-3840px, 0, 0)',
     );
     expect(fixture.componentInstance.active()).toBe(5);
-    top = -1200;
+    top = -1536;
     window.dispatchEvent(new Event('scroll'));
     queued!(16);
     expect(fixture.componentInstance.active()).toBe(2);

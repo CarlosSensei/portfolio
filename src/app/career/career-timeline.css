@@ -228,6 +228,20 @@ button:focus-visible,
   height: 100%;
   min-height: 0;
 }
+@media (min-width: 701px) and (max-height: 700px) {
+  :host(.is-enhanced) .career-shell {
+    padding-block: 14px;
+  }
+  :host(.is-enhanced) .career-heading {
+    padding-bottom: 12px;
+  }
+  :host(.is-enhanced) .career-controls {
+    padding-top: 10px;
+  }
+  :host(.is-enhanced) .step-content {
+    padding-block: clamp(14px, 2.5svh, 24px);
+  }
+}
 @media (max-width: 700px) {
   :host(.is-enhanced) .career-shell {
     padding-block: clamp(10px, 2.5svh, 28px) clamp(10px, 2svh, 22px);

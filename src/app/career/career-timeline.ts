@@ -30,7 +30,6 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   private readonly panels = viewChildren<ElementRef<HTMLLIElement>>('panel');
   private readonly lastIndex = this.steps.length - 1;
   private reducedMotion?: MediaQueryList;
-  private pinViewport?: MediaQueryList;
   private listeners?: AbortController;
   private distance = 0;
   private frame = 0;
@@ -59,10 +58,6 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-      const pinViewport = matchMedia(
-        '(min-width: 860px) and (min-height: 740px), (orientation: portrait)',
-      );
-      this.pinViewport = pinViewport;
       const listeners = new AbortController();
       const options = { passive: true, signal: listeners.signal };
 
@@ -73,7 +68,6 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
       this.viewport.addEventListener('scroll', this.syncNativeScroll, options);
       document.fonts?.addEventListener('loadingdone', this.measure, options);
       reducedMotion.addEventListener('change', this.measure, { signal: listeners.signal });
-      pinViewport.addEventListener('change', this.measure, { signal: listeners.signal });
       this.measure();
     });
   }
@@ -118,7 +112,7 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   };
 
   private readonly measure = (): void => {
-    this.pinned = !this.reducedMotion?.matches && !!this.pinViewport?.matches;
+    this.pinned = !this.reducedMotion?.matches;
     this.host.classList.toggle('is-enhanced', this.pinned);
     // Use native scrolling whenever a stage would be clipped in the sticky viewport.
     if (this.pinned && this.viewport.scrollHeight > this.viewport.clientHeight) {

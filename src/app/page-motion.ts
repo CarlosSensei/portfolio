@@ -1,12 +1,22 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { playSignatureIntro } from './hero/signature-intro';
 
 export function setupPageMotion(root: HTMLElement): () => void {
   gsap.registerPlugin(ScrollTrigger);
   const media = gsap.matchMedia(root);
 
+  const stopSignature = playSignatureIntro(root);
+
   media.add('(prefers-reduced-motion: no-preference)', () => {
-    gsap.from('.hero h1 span', { yPercent: 110, stagger: 0.12, duration: 1.2, ease: 'power4.out' });
+    if (!stopSignature) {
+      gsap.from('.hero h1 > span', {
+        yPercent: 110,
+        stagger: 0.12,
+        duration: 1.2,
+        ease: 'power4.out',
+      });
+    }
     gsap.to('.hero-bottom', {
       y: -60,
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 },
@@ -21,7 +31,10 @@ export function setupPageMotion(root: HTMLElement): () => void {
     });
   });
 
-  return () => media.revert();
+  return () => {
+    stopSignature?.();
+    media.revert();
+  };
 }
 
 export function setupPointerCursor(cursor: HTMLElement): () => void {

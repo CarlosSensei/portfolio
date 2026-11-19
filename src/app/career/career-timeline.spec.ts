@@ -55,8 +55,8 @@ describe('Career timeline navigation', () => {
     vi.unstubAllGlobals();
   });
   it('holds the timeline through all horizontal stages and supports reverse scrolling', async () => {
-    vi.stubGlobal('matchMedia', () => ({
-      matches: false,
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query.includes('min-width'),
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
     }));

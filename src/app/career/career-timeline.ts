@@ -29,6 +29,7 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   private readonly panels = viewChildren<ElementRef<HTMLLIElement>>('panel');
   private readonly lastIndex = this.steps.length - 1;
   private reducedMotion?: MediaQueryList;
+  private pinViewport?: MediaQueryList;
   private listeners?: AbortController;
   private distance = 0;
   private frame = 0;
@@ -57,6 +58,8 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const pinViewport = matchMedia('(min-width: 860px) and (min-height: 740px)');
+      this.pinViewport = pinViewport;
       const listeners = new AbortController();
       const options = { passive: true, signal: listeners.signal };
 
@@ -66,6 +69,7 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
       window.addEventListener('resize', this.measure, options);
       this.viewport.addEventListener('scroll', this.syncNativeScroll, options);
       reducedMotion.addEventListener('change', this.measure, { signal: listeners.signal });
+      pinViewport.addEventListener('change', this.measure, { signal: listeners.signal });
       this.measure();
     });
   }
@@ -110,7 +114,7 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
   };
 
   private readonly measure = (): void => {
-    this.pinned = !this.reducedMotion?.matches;
+    this.pinned = !this.reducedMotion?.matches && !!this.pinViewport?.matches;
     this.host.classList.toggle('is-enhanced', this.pinned);
     this.distance = Math.max(1, this.viewport.clientWidth * this.lastIndex);
     cancelAnimationFrame(this.frame);
@@ -129,6 +133,7 @@ export class CareerTimeline implements AfterViewInit, OnDestroy {
       this.viewport.scrollLeft = this.active() * this.viewport.clientWidth;
     }
 
+    this.frame = 0;
     this.render();
   };
 

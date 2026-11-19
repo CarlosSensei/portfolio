@@ -78,7 +78,7 @@ export const PROJECTS: readonly Project[] = [
     image: 'dashboard.jpg',
     number: '06',
     description:
-      'Aplicación de reservas de restaurantes. El modo cliente es la primera pieza; la gestión del restaurante y el backend siguen en desarrollo.',
+      'Aplicación de reservas de restaurantes. El modo cliente es la primera pieza; la gestión del restaurante y el backend siguen en desarrollo. Usuarios: admin@test.com, user@test.com y owner@test.com Contraseña: 12345678',
     github: 'https://github.com/CarlosSensei/my-table-app',
     demo: 'https://carlossensei.github.io/my-table-app/',
     color: '#c9c2b7',

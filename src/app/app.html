@@ -1,7 +1,10 @@
 <a class="skip" href="#trabajo">Saltar al contenido</a>
 <div #cursor class="cursor" aria-hidden="true"><span>↗</span></div>
 <header>
-  <a class="brand" href="#inicio" aria-label="Carlos Horrillo, inicio">CH<span>®</span></a>
+  <a class="brand" href="#inicio" aria-label="Carlos Horrillo, inicio"
+    ><b class="brand-initials"><i>C</i><i>H</i></b
+    ><span>®</span></a
+  >
   <span class="header-note">DESARROLLO & VISIÓN DE NEGOCIO<br />BARCELONA, ES</span>
   <nav aria-label="Navegación principal">
     <a href="#trabajo"
@@ -24,6 +27,16 @@
     ><a href="#contacto" (click)="closeMenu()">Hablemos ↗</a>
   </nav>
 }
+<div class="signature-intro" aria-hidden="true" hidden>
+  <span class="signature-word"
+    ><span class="signature-letter">C</span
+    ><span class="signature-mask"><span class="signature-tail">arlos</span></span></span
+  >
+  <span class="signature-word"
+    ><span class="signature-letter">H</span
+    ><span class="signature-mask"><span class="signature-tail">orrillo</span></span></span
+  >
+</div>
 <main id="inicio">
   <section class="hero">
     <app-hero-visual />

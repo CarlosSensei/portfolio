@@ -230,6 +230,12 @@ h1 em,
 .link-arrow--up {
   rotate: none;
 }
+.link-arrow--down {
+  rotate: 180deg;
+}
+.link-arrow--down-right {
+  rotate: 135deg;
+}
 .contact-title > .link-arrow {
   position: absolute;
   right: 0;

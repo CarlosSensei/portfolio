@@ -14,9 +14,13 @@
   <span class="eyebrow">{{ details.tags }}</span>
 
   <div class="dialog-links">
-    <a [href]="details.github" target="_blank" rel="noopener noreferrer">Ver código ↗</a>
+    <a [href]="details.github" target="_blank" rel="noopener noreferrer">
+      Ver código <span class="link-arrow" aria-hidden="true"></span>
+    </a>
     @if (details.demo) {
-      <a [href]="details.demo" target="_blank" rel="noopener noreferrer">Abrir demo ↗</a>
+      <a [href]="details.demo" target="_blank" rel="noopener noreferrer">
+        Abrir demo <span class="link-arrow" aria-hidden="true"></span>
+      </a>
     }
   </div>
 </section>

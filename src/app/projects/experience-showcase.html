@@ -5,14 +5,16 @@
       ><span class="eyebrow">{{ projectCount() }} IDEAS HECHAS REALIDAD</span>
     </div>
     <h2 id="work-title" class="reveal">
-      Las ideas<br />se <em>prueban.</em><span aria-hidden="true">↘</span>
+      Las ideas<br />se <em>prueban.</em>
+      <span class="link-arrow link-arrow--down-right" aria-hidden="true"></span>
     </h2>
     <p>Del problema a la interfaz. Del código a algo que puedes usar.</p>
     <nav class="project-index" aria-label="Índice de proyectos">
       @for (project of projects(); track project.name) {
-        <a [href]="'#proyecto-' + project.number"
-          ><sup>{{ project.number }}</sup> {{ project.name }} <span aria-hidden="true">↓</span></a
-        >
+        <a [href]="'#proyecto-' + project.number">
+          <sup>{{ project.number }}</sup> {{ project.name }}
+          <span class="link-arrow link-arrow--down" aria-hidden="true"></span>
+        </a>
       }
     </nav>
   </div>
@@ -44,7 +46,7 @@
                 (click)="projectOpened.emit(project.name)"
                 [attr.aria-label]="'Explorar proyecto ' + project.name"
               >
-                Explorar proyecto <span aria-hidden="true">↗</span>
+                Explorar proyecto <span class="link-arrow" aria-hidden="true"></span>
               </button>
               @if (project.demo) {
                 <a
@@ -52,12 +54,13 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   [attr.aria-label]="'Probar ' + project.name + ' (nueva pestaña)'"
-                  >Probar demo ↗</a
                 >
+                  Probar demo <span class="link-arrow" aria-hidden="true"></span>
+                </a>
               } @else {
-                <a [href]="project.github" target="_blank" rel="noopener noreferrer"
-                  >Ver código ↗</a
-                >
+                <a [href]="project.github" target="_blank" rel="noopener noreferrer">
+                  Ver código <span class="link-arrow" aria-hidden="true"></span>
+                </a>
               }
             </div>
           </div>
@@ -81,19 +84,19 @@
                     width="720"
                     height="480" /></span
               ></span>
-              <span class="art-bottom"
-                ><span>{{ project.name }}</span
-                ><span class="art-arrow" aria-hidden="true">↗</span></span
-              >
+              <span class="art-bottom">
+                <span>{{ project.name }}</span>
+                <span class="art-arrow" aria-hidden="true"><span class="link-arrow"></span></span>
+              </span>
             </button>
           </div>
         </div>
         <div class="chapter-footer">
-          <span>CRITERIO + CURIOSIDAD + CÓDIGO</span
-          ><a [href]="nextProject ? '#proyecto-' + nextProject.number : '#contacto'"
-            >{{ nextProject ? 'SIGUIENTE PROYECTO' : 'HABLEMOS' }}
-            <span aria-hidden="true">↓</span></a
-          >
+          <span>CRITERIO + CURIOSIDAD + CÓDIGO</span>
+          <a [href]="nextProject ? '#proyecto-' + nextProject.number : '#contacto'">
+            {{ nextProject ? 'SIGUIENTE PROYECTO' : 'HABLEMOS' }}
+            <span class="link-arrow link-arrow--down" aria-hidden="true"></span>
+          </a>
         </div>
       </section>
     }

@@ -18,8 +18,7 @@
   display: none;
 }
 
-.signature-intro .signature-letter,
-.brand .brand-initials {
+.signature-intro .signature-letter {
   color: var(--red, #dc432c);
 }
 

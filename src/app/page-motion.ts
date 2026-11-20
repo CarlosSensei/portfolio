@@ -56,3 +56,32 @@ export function setupPointerCursor(cursor: HTMLElement): () => void {
   }
   return () => listeners.abort();
 }
+
+export function setupFloatingMenuTone(root: HTMLElement, button: HTMLButtonElement): () => void {
+  const contact = root.querySelector<HTMLElement>('#contacto');
+  if (!contact) return () => {};
+
+  const listeners = new AbortController();
+  let frame: number | undefined;
+
+  const updateTone = (): void => {
+    frame = undefined;
+    const iconCenter = button.offsetTop + button.offsetHeight / 2;
+    const { top, bottom } = contact.getBoundingClientRect();
+    button.classList.toggle('menu-toggle--over-contact', top <= iconCenter && iconCenter < bottom);
+  };
+
+  const scheduleUpdate = (): void => {
+    frame ??= requestAnimationFrame(updateTone);
+  };
+
+  updateTone();
+  const options = { passive: true, signal: listeners.signal };
+  window.addEventListener('scroll', scheduleUpdate, options);
+  window.addEventListener('resize', scheduleUpdate, options);
+
+  return () => {
+    listeners.abort();
+    if (frame !== undefined) cancelAnimationFrame(frame);
+  };
+}

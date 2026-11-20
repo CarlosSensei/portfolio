@@ -1,6 +1,6 @@
 <a class="skip" href="#trabajo">Saltar al contenido</a>
 <div #cursor class="cursor" aria-hidden="true"><span>↗</span></div>
-<header>
+<header #header id="inicio" tabindex="-1">
   <a class="brand" href="#inicio" aria-label="Carlos Horrillo, inicio"
     ><b class="brand-initials"><i>C</i><i>H</i></b
     ><span>®</span></a
@@ -9,24 +9,87 @@
   <nav aria-label="Navegación principal">
     <a href="#trabajo"
       >Trabajo <sup>{{ projectCount }}</sup></a
-    ><a href="#perfil">Perfil</a><a href="#contacto">Hablemos ↗</a>
+    ><a href="#perfil">Perfil</a
+    ><a class="header-contact" href="#contacto"
+      >Hablemos <span class="link-arrow" aria-hidden="true"></span
+    ></a>
   </nav>
   <button
-    class="menu-toggle"
-    (click)="toggleMenu()"
+    #headerToggle
+    type="button"
+    class="menu-toggle menu-toggle--header"
+    (click)="openMenu(headerToggle)"
     [attr.aria-expanded]="menuOpen()"
-    aria-controls="mobile-menu"
+    aria-controls="site-menu"
+    aria-haspopup="dialog"
+    aria-label="Abrir menú"
   >
-    {{ menuOpen() ? 'Cerrar −' : 'Menú + ' }}
+    <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
   </button>
 </header>
-@if (menuOpen()) {
-  <nav id="mobile-menu" class="mobile-menu" aria-label="Navegación móvil">
-    <a href="#trabajo" (click)="closeMenu()">Trabajo ↗</a
-    ><a href="#perfil" (click)="closeMenu()">Perfil ↗</a
-    ><a href="#contacto" (click)="closeMenu()">Hablemos ↗</a>
-  </nav>
-}
+<button
+  #floatingToggle
+  type="button"
+  class="menu-toggle menu-toggle--floating"
+  [class.menu-toggle--visible]="headerPassed() && !selectedProject()"
+  (click)="openMenu(floatingToggle)"
+  [attr.aria-expanded]="menuOpen()"
+  aria-controls="site-menu"
+  aria-haspopup="dialog"
+  aria-label="Abrir menú"
+>
+  <span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+</button>
+<dialog
+  #menu
+  class="site-menu"
+  id="site-menu"
+  aria-labelledby="site-menu-title"
+  (cancel)="closeMenu($event)"
+>
+  <div #menuPanel class="site-menu-panel">
+    <button
+      type="button"
+      class="menu-toggle menu-toggle--close"
+      (click)="closeMenu()"
+      aria-label="Cerrar menú"
+      autofocus
+    >
+      <span class="menu-icon menu-icon--close" aria-hidden="true"
+        ><span></span><span></span><span></span
+      ></span>
+    </button>
+    <div class="site-menu-layout">
+      <nav aria-labelledby="site-menu-title">
+        <h2 class="site-menu-label" id="site-menu-title">Menú</h2>
+        <ul class="site-menu-sections">
+          @for (section of sections; track section.id) {
+            <li class="site-menu-reveal" [style.--item]="$index">
+              <a [href]="'#' + section.id" (click)="followMenuLink($event, section.id)">
+                <span>{{ section.label }}</span
+                ><span class="link-arrow" aria-hidden="true"></span>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+      <div class="site-menu-contact site-menu-reveal">
+        <h2 class="site-menu-label">Hablemos</h2>
+        <div class="site-menu-links">
+          @for (link of contactLinks; track link.href) {
+            <a
+              [href]="link.href"
+              [attr.target]="link.external ? '_blank' : null"
+              [attr.rel]="link.external ? 'noopener noreferrer' : null"
+            >
+              {{ link.label }} <span class="link-arrow" aria-hidden="true"></span>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
 <div class="signature-intro" aria-hidden="true" hidden>
   <span class="signature-word"
     ><span class="signature-letter">C</span
@@ -37,7 +100,7 @@
     ><span class="signature-mask"><span class="signature-tail">orrillo</span></span></span
   >
 </div>
-<main id="inicio">
+<main>
   <section class="hero">
     <app-hero-visual />
     <div class="hero-meta">
@@ -60,7 +123,7 @@
   </section>
   <app-profile />
   <app-experience-showcase [projects]="projects" (projectOpened)="openProject($event)" />
-  <section class="approach section-pad">
+  <section class="approach section-pad" id="enfoque" tabindex="-1">
     <span class="eyebrow">03 / CÓMO PIENSO</span>
     <h2 class="reveal">Del problema real<br />a la <em>solución correcta.</em></h2>
     <div class="approach-rows">
@@ -91,20 +154,22 @@
       <span>✳︎</span> POSTGRESQL
     </div>
   </section>
-  <section class="contact section-pad" id="contacto">
+  <section class="contact section-pad" id="contacto" tabindex="-1">
     <span class="eyebrow">04 / EL SIGUIENTE CAPÍTULO</span>
     <p>¿Un equipo, un proyecto o una buena conversación?</p>
     <a class="contact-title" href="mailto:carloshorrillo@hotmail.com"
       >HAGAMOS<br /><em>QUE PASE.</em><span class="link-arrow" aria-hidden="true"></span
     ></a>
     <div class="contact-links">
-      <a href="mailto:hola@carloshorrillo.com"
-        >hola&#64;carloshorrillo.com <span class="link-arrow" aria-hidden="true"></span></a
-      ><a href="https://linkedin.com/in/carlos-horrillo" target="_blank" rel="noopener noreferrer"
-        >LinkedIn <span class="link-arrow" aria-hidden="true"></span></a
-      ><a href="https://github.com/CarlosSensei" target="_blank" rel="noopener noreferrer"
-        >GitHub <span class="link-arrow" aria-hidden="true"></span
-      ></a>
+      @for (link of contactLinks; track link.href) {
+        <a
+          [href]="link.href"
+          [attr.target]="link.external ? '_blank' : null"
+          [attr.rel]="link.external ? 'noopener noreferrer' : null"
+        >
+          {{ link.label }} <span class="link-arrow" aria-hidden="true"></span>
+        </a>
+      }
     </div>
   </section>
 </main>

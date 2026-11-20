@@ -1,4 +1,9 @@
 /* Navegación */
+app-root {
+  --menu-top: max(16px, env(safe-area-inset-top));
+  --contact-ink: #f5eddf;
+}
+
 header {
   height: 102px;
   margin: 0 var(--gutter);
@@ -44,13 +49,277 @@ header nav {
 header nav a {
   position: relative;
 }
+.header-contact {
+  white-space: nowrap;
+}
 sup {
   font-size: 10px;
   vertical-align: top;
   margin-left: 4px;
 }
 .menu-toggle {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, currentColor 60%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  transition: border-color 0.25s;
+}
+.menu-toggle:hover {
+  border-color: currentColor;
+}
+.menu-toggle--header,
+.menu-toggle--floating {
+  color: var(--red);
+  border-color: currentColor;
+}
+.menu-toggle--floating.menu-toggle--over-contact {
+  color: var(--contact-ink);
+}
+.menu-toggle--header .menu-icon > span,
+.menu-toggle--floating .menu-icon > span {
+  height: 2px;
+}
+.menu-toggle--header {
   display: none;
+}
+.menu-toggle--floating,
+.menu-toggle--close {
+  position: fixed;
+  inset-block-start: var(--menu-top);
+  left: 50vw;
+  translate: -50% 0;
+}
+.menu-toggle--floating {
+  z-index: 25;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.24s,
+    transform 0.24s,
+    visibility 0.24s,
+    border-color 0.25s;
+}
+.menu-toggle--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.menu-icon {
+  display: grid;
+  gap: 4px;
+}
+.menu-icon > span {
+  width: 20px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.menu-icon--close {
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (hover: hover) {
+  .menu-toggle--close:hover .menu-icon--close {
+    transform: rotate(180deg);
+  }
+}
+.menu-icon--close > span:first-child {
+  transform: translateY(5.5px) rotate(45deg);
+}
+.menu-icon--close > span:nth-child(2) {
+  opacity: 0;
+}
+.menu-icon--close > span:last-child {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+html:has(.site-menu[open]) {
+  overflow: hidden;
+}
+.site-menu {
+  --menu-rule: color-mix(in srgb, var(--paper) 26%, transparent);
+  --menu-accent: #f36547;
+  --menu-duration: 0.48s;
+  --menu-layer-delay: 0.08s;
+  --menu-last-delay: calc(2 * var(--menu-layer-delay));
+  --menu-total: calc(var(--menu-duration) + var(--menu-last-delay));
+  --menu-ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --menu-fold: polygon(
+    calc(50% - 36px) 0,
+    calc(50% + 36px) calc(var(--menu-top) + 64px),
+    calc(50% + 36px) calc(var(--menu-top) + 64px),
+    calc(50% - 36px) 0
+  );
+  --menu-unfolded: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  color: var(--paper);
+  background: transparent;
+  pointer-events: none;
+  transition:
+    display var(--menu-total) allow-discrete,
+    overlay var(--menu-total) allow-discrete;
+}
+.site-menu[open] {
+  pointer-events: auto;
+}
+.site-menu::backdrop {
+  background: transparent;
+  pointer-events: none;
+}
+.site-menu::before,
+.site-menu::after,
+.site-menu-panel {
+  position: absolute;
+  inset: 0;
+  clip-path: var(--menu-fold);
+  transition: clip-path var(--menu-duration) var(--menu-ease);
+}
+.site-menu::before,
+.site-menu::after {
+  content: '';
+  pointer-events: none;
+}
+.site-menu::before {
+  background: var(--menu-accent);
+  transition-delay: var(--menu-last-delay);
+}
+.site-menu::after {
+  background: var(--paper);
+  transition-delay: var(--menu-layer-delay);
+}
+.site-menu-panel {
+  z-index: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--ink);
+}
+.site-menu[open]::before,
+.site-menu[open]::after,
+.site-menu[open] .site-menu-panel {
+  clip-path: var(--menu-unfolded);
+}
+.site-menu[open]::before {
+  transition-delay: 0s;
+}
+.site-menu[open] .site-menu-panel {
+  transition-delay: var(--menu-last-delay);
+}
+@starting-style {
+  .site-menu[open]::before,
+  .site-menu[open]::after,
+  .site-menu[open] .site-menu-panel {
+    clip-path: var(--menu-fold);
+  }
+}
+.menu-toggle--close {
+  z-index: 1;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+}
+.menu-toggle--close:is(:hover, :focus-visible) {
+  background: var(--menu-accent);
+  border-color: var(--menu-accent);
+  color: var(--ink);
+}
+.site-menu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(225px, 1fr);
+  align-items: end;
+  align-content: safe center;
+  gap: clamp(32px, 9vw, 156px);
+  min-height: 100%;
+  padding: calc(var(--menu-top) + 86px) max(var(--gutter), calc((100% - 1440px) / 2))
+    max(36px, env(safe-area-inset-bottom));
+}
+.site-menu-label {
+  margin-bottom: 18px;
+  font:
+    600 11px/1.4 'DM Sans',
+    sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.site-menu-sections {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--menu-rule);
+}
+.site-menu-sections li {
+  border-top: 1px solid var(--menu-rule);
+}
+.site-menu-sections a,
+.site-menu-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: color 0.25s ease;
+}
+.site-menu a:is(:hover, :focus-visible) {
+  color: var(--menu-accent);
+}
+.site-menu-sections a {
+  padding: 7px 4px 11px 0;
+  font:
+    500 clamp(38px, min(6.5vw, 9vh), 100px)/1.03 'Manrope',
+    sans-serif;
+  letter-spacing: -0.07em;
+}
+.site-menu-sections .link-arrow {
+  flex: none;
+  font-size: 0.43em;
+  color: var(--menu-accent);
+  transition: transform 0.25s ease;
+}
+.site-menu a:hover .link-arrow,
+.site-menu a:focus-visible .link-arrow {
+  transform: translate(12%, -12%);
+}
+.site-menu-contact {
+  --item: 4;
+}
+.site-menu-links {
+  border-block: 1px solid var(--menu-rule);
+}
+.site-menu-links a {
+  padding-block: 13px;
+  font-size: clamp(15px, 1.45vw, 22px);
+}
+.site-menu-links a + a {
+  border-top: 1px solid var(--menu-rule);
+}
+.site-menu-links .link-arrow {
+  flex: none;
+  color: var(--menu-accent);
+  transition: transform 0.25s ease;
+}
+.site-menu[open] .site-menu-reveal {
+  animation: menu-link-in 0.46s cubic-bezier(0.2, 0.65, 0.25, 1) both;
+  animation-delay: calc(var(--menu-last-delay) + 0.12s + var(--item) * 0.045s);
+}
+@keyframes menu-link-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.45em);
+  }
 }
 
 /* Portada */
@@ -202,7 +471,7 @@ h1 em,
 /* Contacto */
 .contact {
   background: var(--red);
-  color: #f5eddf;
+  color: var(--contact-ink);
 }
 .contact > p {
   margin: 60px 0 30px;
@@ -224,7 +493,17 @@ h1 em,
   height: 1em;
   vertical-align: -0.12em;
   background-color: currentColor;
-  clip-path: polygon(50% 10%, 88% 48%, 81% 55%, 55% 29%, 55% 90%, 45% 90%, 45% 29%, 19% 55%, 12% 48%);
+  clip-path: polygon(
+    50% 10%,
+    88% 48%,
+    81% 55%,
+    55% 29%,
+    55% 90%,
+    45% 90%,
+    45% 29%,
+    19% 55%,
+    12% 48%
+  );
   rotate: 45deg;
 }
 .link-arrow--up {
@@ -359,9 +638,6 @@ footer {
 }
 
 /* Diseño adaptable */
-.mobile-menu {
-  display: none;
-}
 @media (pointer: fine) {
   .cursor {
     display: block;
@@ -375,34 +651,26 @@ footer {
 @media (max-width: 800px) {
   header {
     height: 82px;
-    gap: 25px;
+    gap: clamp(12px, 3vw, 25px);
   }
   .header-note {
     font-size: 9px;
   }
-  header nav {
+  header nav a:not(.header-contact) {
     display: none;
   }
-  .menu-toggle {
-    display: block;
-    margin-left: auto;
-    background: none;
-    border: 0;
-    font-size: 12px;
+  .menu-toggle--header {
+    display: grid;
+    width: 44px;
+    height: 44px;
   }
-  .mobile-menu {
-    display: flex;
-    position: absolute;
-    top: 82px;
-    left: 0;
-    right: 0;
-    background: var(--paper);
-    padding: 30px var(--gutter);
-    z-index: 15;
-    flex-direction: column;
-    gap: 20px;
-    font-size: 32px;
-    border-bottom: 1px solid;
+  .site-menu-layout {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(24px, 5vh, 48px);
+  }
+  .site-menu-sections a {
+    font-size: clamp(33px, min(9vw, 8vh), 64px);
   }
   .hero {
     min-height: 720px;

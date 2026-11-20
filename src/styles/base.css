@@ -12,55 +12,68 @@
   background: var(--paper);
   font-synthesis: none;
 }
+
 * {
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
 }
+
 body {
   margin: 0;
 }
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+
 button {
   font: inherit;
   color: inherit;
   cursor: pointer;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid var(--red);
   outline-offset: 6px;
 }
+
 ::selection {
   background: var(--red);
   color: var(--paper);
 }
+
 h1,
 h2,
 h3,
 p {
   margin: 0;
 }
+
 em {
   font-family: Georgia, 'Times New Roman', serif;
   font-weight: 400;
   letter-spacing: -0.065em;
 }
+
 .section-pad {
   padding: var(--space) var(--gutter);
 }
+
 .eyebrow {
   display: block;
 }
+
 h2 {
   font-family: 'Manrope', sans-serif;
   font-weight: 500;

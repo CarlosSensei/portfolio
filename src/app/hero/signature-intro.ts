@@ -106,7 +106,7 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
     showTitle();
 
     gsap.set([overlay, ...initials, ...tails], {
-      clearProps: 'transform,transformOrigin,opacity',
+      clearProps: 'transform,transformOrigin,opacity,color',
     });
   };
 
@@ -140,6 +140,11 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
         ease: 'sine.inOut',
       },
       flightStart,
+    )
+    .to(
+      initials,
+      { color: getComputedStyle(logo).color, duration: 0.55, ease: 'sine.inOut' },
+      landing - 0.55,
     )
     .call(showLogo, [], landing)
     .call(showTitle, [], titleReveal);

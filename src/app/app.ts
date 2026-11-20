@@ -56,12 +56,14 @@ export class App implements AfterViewInit, OnDestroy {
   private stopMenuTone?: () => void;
   private stopMotion?: () => void;
   private stopCursor?: () => void;
+  private menuOpener?: HTMLButtonElement;
   private returnFocus?: HTMLElement;
 
   protected openMenu(opener: HTMLButtonElement): void {
     const menu = this.menu().nativeElement;
     opener.focus({ preventScroll: true });
     menu.showModal();
+    this.menuOpener = opener;
     this.menuPanel().nativeElement.scrollTop = 0;
     this.menuOpen.set(true);
   }
@@ -69,6 +71,14 @@ export class App implements AfterViewInit, OnDestroy {
   protected closeMenu(event?: Event): void {
     event?.preventDefault();
     this.menu().nativeElement.close();
+    if (
+      event instanceof MouseEvent &&
+      event.detail > 0 &&
+      this.document.activeElement === this.menuOpener
+    ) {
+      this.menuOpener.blur();
+    }
+    this.menuOpener = undefined;
     this.menuOpen.set(false);
   }
 

@@ -16,7 +16,8 @@ header {
   z-index: 20;
   -webkit-tap-highlight-color: transparent;
 }
-header:focus {
+header:focus,
+section[tabindex='-1']:focus {
   outline: none;
 }
 .brand {

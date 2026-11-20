@@ -10,7 +10,6 @@ const tailDuration = 0.3;
 const flightDuration = 2;
 const titleDelay = 0.08;
 
-
 const tailStart = fadeIn + nameHold;
 const flightStart = tailStart + tailDuration;
 const landing = flightStart + flightDuration;
@@ -35,42 +34,13 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
 
   if (!overlay || !logo || !heading) return;
 
-  const initials = Array.from(
-    overlay.querySelectorAll<HTMLElement>('.signature-letter'),
-  );
+  const initials = Array.from(overlay.querySelectorAll<HTMLElement>('.signature-letter'));
   const targets = Array.from(logo.querySelectorAll<HTMLElement>('i'));
-  const tails = Array.from(
-    overlay.querySelectorAll<HTMLElement>('.signature-tail'),
-  );
+  const tails = Array.from(overlay.querySelectorAll<HTMLElement>('.signature-tail'));
 
   if (initials.length !== 2 || targets.length !== 2) return;
 
-  // El CSS centra el nombre. Mostramos la capa antes de medir las letras.
   overlay.hidden = false;
-
-  const scale =
-    parseFloat(getComputedStyle(logo).fontSize) /
-    parseFloat(getComputedStyle(initials[0]).fontSize);
-
-  const destinations = initials.map((letter, index) => {
-    const from = letter.getBoundingClientRect();
-    const to = targets[index].getBoundingClientRect();
-
-    return {
-      x: (to.left + to.width / 2) - (from.left + from.width / 2),
-      y: (to.top + to.height / 2) - (from.top + from.height / 2),
-      measurable: from.width > 0 && to.width > 0,
-    };
-  });
-
-  if (
-    !Number.isFinite(scale) ||
-    scale <= 0 ||
-    destinations.some(({ measurable }) => !measurable)
-  ) {
-    overlay.hidden = true;
-    return;
-  }
 
   played = true;
 
@@ -84,6 +54,8 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
   const options = { passive: true, signal: listeners.signal };
   const initialWidth = window.innerWidth;
   const animation = gsap.timeline({ paused: true });
+  const destinations: { x: number; y: number; scale: number }[] = [];
+  let flightStarted = false;
   let finished = false;
 
   const showLogo = (): void => {
@@ -113,6 +85,28 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
   logo.classList.add('signature-in-flight');
   heading.classList.add('signature-title-waiting');
 
+  const measureFlight = (): void => {
+    // La tipografía puede terminar de cargar mientras se muestra el nombre.
+    const scale =
+      parseFloat(getComputedStyle(logo).fontSize) /
+      parseFloat(getComputedStyle(initials[0]).fontSize);
+    for (const [index, letter] of initials.entries()) {
+      const from = letter.getBoundingClientRect();
+      const to = targets[index].getBoundingClientRect();
+      if (!Number.isFinite(scale) || scale <= 0 || !from.width || !to.width) {
+        finish();
+        return;
+      }
+
+      destinations[index] = {
+        x: to.left + (to.width - from.width) / 2 - from.left,
+        y: to.top + (to.height - from.height) / 2 - from.top,
+        scale,
+      };
+    }
+    flightStarted = true;
+  };
+
   animation
     .from(overlay, {
       opacity: 0,
@@ -129,12 +123,13 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
       },
       tailStart,
     )
+    .call(measureFlight, [], flightStart)
     .to(
       initials,
       {
-        x: (index: number) => destinations[index].x,
-        y: (index: number) => destinations[index].y,
-        scale,
+        x: (index: number) => destinations[index]?.x ?? 0,
+        y: (index: number) => destinations[index]?.y ?? 0,
+        scale: (index: number) => destinations[index]?.scale ?? 1,
         transformOrigin: '50% 50%',
         duration: flightDuration,
         ease: 'sine.inOut',
@@ -162,13 +157,20 @@ export function playSignatureIntro(root: HTMLElement): (() => void) | undefined 
   window.addEventListener(
     'resize',
     () => {
-      if (window.innerWidth !== initialWidth) finish();
+      if (window.innerWidth !== initialWidth || flightStarted) finish();
     },
     options,
   );
 
   window.addEventListener('pointerdown', finish, options);
   window.addEventListener('keydown', finish, options);
+  root.ownerDocument.fonts?.addEventListener(
+    'loadingdone',
+    (event) => {
+      if (flightStarted && event.fontfaces.some(({ family }) => family === 'Manrope')) finish();
+    },
+    options,
+  );
   motion.addEventListener('change', finish, options);
 
   animation.play();

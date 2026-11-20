@@ -47,6 +47,7 @@ export class App implements AfterViewInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly cursor = viewChild.required<ElementRef<HTMLElement>>('cursor');
   private readonly header = viewChild.required<ElementRef<HTMLElement>>('header');
+  private readonly headerToggle = viewChild.required<ElementRef<HTMLButtonElement>>('headerToggle');
   private readonly menu = viewChild.required<ElementRef<HTMLDialogElement>>('menu');
   private readonly menuPanel = viewChild.required<ElementRef<HTMLElement>>('menuPanel');
   private readonly floatingToggle =
@@ -102,6 +103,7 @@ export class App implements AfterViewInit, OnDestroy {
       this.stopMenuTone = setupFloatingMenuTone(
         this.host.nativeElement,
         this.floatingToggle().nativeElement,
+        this.headerToggle().nativeElement,
       );
       this.stopMotion = setupPageMotion(this.host.nativeElement);
       this.stopCursor = setupPointerCursor(this.cursor().nativeElement);

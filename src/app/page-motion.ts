@@ -57,7 +57,10 @@ export function setupPointerCursor(cursor: HTMLElement): () => void {
   return () => listeners.abort();
 }
 
-export function setupFloatingMenuTone(root: HTMLElement, button: HTMLButtonElement): () => void {
+export function setupFloatingMenuTone(
+  root: HTMLElement,
+  ...buttons: HTMLButtonElement[]
+): () => void {
   const contact = root.querySelector<HTMLElement>('#contacto');
   if (!contact) return () => {};
 
@@ -66,9 +69,14 @@ export function setupFloatingMenuTone(root: HTMLElement, button: HTMLButtonEleme
 
   const updateTone = (): void => {
     frame = undefined;
-    const iconCenter = button.offsetTop + button.offsetHeight / 2;
     const { top, bottom } = contact.getBoundingClientRect();
-    button.classList.toggle('menu-toggle--over-contact', top <= iconCenter && iconCenter < bottom);
+    for (const button of buttons) {
+      const iconCenter = button.offsetTop + button.offsetHeight / 2;
+      button.classList.toggle(
+        'menu-toggle--over-contact',
+        top <= iconCenter && iconCenter < bottom,
+      );
+    }
   };
 
   const scheduleUpdate = (): void => {

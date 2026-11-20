@@ -4,7 +4,7 @@
   inset: 0;
   display: flex;
   justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
+  align-items: center; /* Centra verticalmente */
   pointer-events: none;
   color: var(--ink, #24241f);
   font:
@@ -20,6 +20,8 @@
 
 .signature-intro .signature-letter {
   color: var(--red, #dc432c);
+  letter-spacing: 0;
+  vertical-align: top;
 }
 
 .signature-word,
@@ -36,14 +38,16 @@
 }
 
 .brand-initials {
-  display: inline-block;
+  display: inline-flex;
   font: inherit;
-  line-height: 1;
 }
 
 .brand-initials i {
-  display: inline-block;
   font-style: normal;
+}
+
+.brand-initials i + i {
+  margin-inline-start: -0.12em;
 }
 
 .brand-initials.signature-in-flight {
@@ -78,4 +82,3 @@
     opacity: 1;
   }
 }
-

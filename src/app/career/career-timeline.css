@@ -27,13 +27,6 @@
 .career-heading em {
   color: #ff967f;
 }
-.career-hint {
-  color: #d5cabb;
-  font-size: 12px;
-}
-.career-hint span {
-  margin-left: 8px;
-}
 .career-viewport {
   overflow-x: auto;
   scroll-snap-type: x mandatory;

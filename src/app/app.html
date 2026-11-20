@@ -18,6 +18,7 @@
     #headerToggle
     type="button"
     class="menu-toggle menu-toggle--header"
+    [class.menu-toggle--header-hidden]="!!selectedProject()"
     (click)="openMenu(headerToggle)"
     [attr.aria-expanded]="menuOpen()"
     aria-controls="site-menu"
